@@ -80,7 +80,8 @@ class BrasserieController extends AbstractFOSRestController
     public function update(Brasserie $new_brasserie, Brasserie $brasserie, ConstraintViolationList $violations)
     {
         if (count($violations) > 0) {
-            return $this->view($violations, Response::HTTP_BAD_REQUEST);
+            throw new ResourceValidationException("error");
+            //return $this->view($violations, Response::HTTP_BAD_REQUEST);
         }
 
         dump($brasserie, $new_brasserie);
