@@ -4,28 +4,30 @@ namespace App\Controller\api;
 
 use App\Entity\Brasserie;
 
-use App\Form\BrasserieType;
+use App\Controller\api\apiController;
 use App\Repository\BrasserieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
   * @Route("/api/brasserie")
   */
-class BrasserieController extends AbstractController
+class BrasserieController extends apiController
 {
-    private $serializer;
-    private $repository;
+    protected $serializer;
+    protected $repository;
+    protected $em;
 
-    public function __construct(SerializerInterface $serializer, BrasserieRepository $brasserieRepository)
+    public function __construct(
+        SerializerInterface $serializer,
+        BrasserieRepository $brasserieRepository,
+        EntityManagerInterface $em)
     {
-        $this->serializer = $serializer;
+        parent::__construct($serializer, $em);
         $this->repository = $brasserieRepository;
     }
 
@@ -34,12 +36,7 @@ class BrasserieController extends AbstractController
      */
     public function read_all(): Response
     {
-        $brasseries = $this->repository->findAll();
-        $json = $this->serializer->serialize($brasseries, 'json');
-
-        return new Response($json, 200, [
-            'Content-Type' => 'application/json'
-        ]);
+        return $this->api_read_all();
     }
 
     /**
@@ -47,91 +44,31 @@ class BrasserieController extends AbstractController
      */
     public function read_one($id): Response
     {
-        $brasserie = $this->repository->findById($id);
-        if (count($brasserie) == 0) {
-            return new Response("Not Found", 404, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        $json = $this->serializer->serialize($brasserie[0], 'json');
-        return new Response($json, 200, [
-            'Content-Type' => 'application/json'
-        ]);
+        return $this->api_read_one($id);
     }
 
     /**
      * @Route("/", name="api.brasserie.new", methods="POST")
      */
-    public function create(Request $request, EntityManagerInterface $em, ValidatorInterface $validator): Response
+    public function create(Request $request, ValidatorInterface $validator): Response
     {
-        $json_data = $request->getContent();
-        try {
-            $post = $this->serializer->deserialize($json_data, Brasserie::class, 'json');
-        } catch (NotEncodableValueException $e) {
-            return $this->json([
-                'status' => 400,
-                'message' => $e->getMessage()
-            ]);
-        }
-        $errors = $validator->validate($post);
-        if (count($errors) == 0) {
-            $em->persist($post);
-            $em->flush();
-            return new Response($json_data, 201, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        return $this->json($errors, 400);
+        return $this->api_create($request, $validator, Brasserie::class);
     }
 
     /**
      * @Route("/{id}", name="api.brasserie.update", methods={"PUT"})
      */
-    public function edit(Request $request, $id, ValidatorInterface $validator, EntityManagerInterface $em): Response
+    public function update(Request $request, $id, ValidatorInterface $validator): Response
     {
-        $json_data = $request->getContent();
-        try {
-            $new_brasserie = $this->serializer->deserialize($json_data, Brasserie::class, 'json');
-        } catch (NotEncodableValueException $e) {
-            return $this->json([
-                'status' => 400,
-                'message' => $e->getMessage()
-            ]);
-        }
-        $errors = $validator->validate($new_brasserie);
-        if (count($errors) == 0) {
-            $old_brasserie = $this->repository->findById($id);
-            if (count($old_brasserie) == 0) {
-                return $this->json("Not found", 404);
-            }
-            $old_brasserie = $old_brasserie[0];
-            $old_brasserie->setName($new_brasserie->getName());
-            $old_brasserie->setStreet($new_brasserie->getStreet());
-            $old_brasserie->setCity($new_brasserie->getCity());
-            $old_brasserie->setPostalCode($new_brasserie->getPostalCode());
-            $old_brasserie->setCountry($new_brasserie->getCountry());
-            $old_brasserie->setDateCreate($new_brasserie->getDateCreate());
-            $old_brasserie->setDateUpdate($new_brasserie->getDateUpdate());
-            $em->flush();
-            return new Response($json_data, 200, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        return $this->json($errors, 400);
+        return $this->api_update($request, $id, $validator, Brasserie::class);
     }
 
     /**
      * @Route("/{id}", name="brasserie_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id, EntityManagerInterface $em): Response
+    public function delete($id): Response
     {
-        $brasserie = $this->repository->findById($id);
-        if (count($brasserie) == 0) {
-            return $this->json("Not found", 404);
-        }
-        $em->remove($brasserie[0]);
-        $em->flush();
-        return $this->json("Ok", 200);
+        return $this->api_delete($id);
     }
 
 }
