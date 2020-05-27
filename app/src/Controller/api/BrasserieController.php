@@ -8,89 +8,36 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Exception\ResourceValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
   * @Route("/api/brasserie")
   */
-class BrasserieController extends AbstractFOSRestController
+class BrasserieController extends AbstractController
 {
-    /**
-     * @Rest\Get(
-     *      path = "/{id}",
-     *      name = "brasserie.read",
-     *      requirements = {"id"="\d+"}
-     * )
-     * @Rest\View(populateDefaultVars=false)
-     */
-    public function read_one(Brasserie $brasserie)
+    private $serializer;
+
+    public function __construct(SerializerInterface $serializer)
     {
-        return $brasserie;
+        $this->serializer = $serializer;
     }
 
     /**
-     * @Rest\Get(
-     *      path = "/",
-     *      name = "brasserie.read.all",
-     * )
-     * @Rest\View(populateDefaultVars=false)
+     * @Route("/", name="api.brasserie.get_all", methods={"GET"})
      */
     public function read_all()
     {
         $repository = $this->getDoctrine()->getRepository(Brasserie::class);
+        $data = $repository->findAll();
 
-        return $repository->findAll();
+        $json = $this->serializer->serialize($data, 'json');
+        return new Response($json, 200, [
+            'Content-Type' => 'application/json'
+        ]);
     }
 
-    /**
-     * @Rest\Post("/")
-     * @Rest\View(populateDefaultVars=false)
-     * @ParamConverter("brasserie", converter="fos_rest.request_body")
-     */
-    public function create(Brasserie $brasserie, ValidatorInterface $validator)
-    {
-        $error = $validator->validate($brasserie);
-
-        if (count($error) != 0) {
-            throw new ResourceValidationException($error);
-            return $this->view($error, Response::HTTP_BAD_REQUEST);
-        }
-        $manager = $this->getDoctrine()->getManager();
-
-        $manager->persist($brasserie);
-        $manager->flush();
-
-        return $brasserie;
-    }
-
-     /**
-     * @Rest\Put(
-     *      path = "/{id}",
-     *      name = "brasserie.update",
-     *      requirements = {"id"="\d+"}
-     * )
-     * @ParamConverter("brasserie")
-     * @ParamConverter("new_brasserie", converter="fos_rest.request_body")
-     * @Rest\View(populateDefaultVars=false)
-     */
-    public function update(Brasserie $new_brasserie, Brasserie $brasserie, ConstraintViolationList $violations)
-    {
-        if (count($violations) > 0) {
-            throw new ResourceValidationException("error");
-            //return $this->view($violations, Response::HTTP_BAD_REQUEST);
-        }
-
-        dump($brasserie, $new_brasserie);
-
-        //$manager = $this->getDoctrine()->getManager();
-
-        //$manager->persist($brasserie);
-        //$manager->flush();
-
-        return $brasserie;
-    }
 }

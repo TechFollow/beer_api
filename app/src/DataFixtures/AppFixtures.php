@@ -12,6 +12,8 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $max_line = 1000;
+        $line = 0;
         $data = [];
 
         if (($file = fopen("../open-beer-database.csv", "r")) !== FALSE) {
@@ -23,6 +25,10 @@ class AppFixtures extends Fixture
                 $manager->persist($brasserie);
                 $beer = $this->create_beer($data, $brasserie);
                 $manager->persist($beer);
+                $line++;
+                if ($line >= $max_line) {
+                    break;
+                }
             }
         }
         fclose($file);
