@@ -64,7 +64,7 @@ class BrasserieController extends apiController
     }
 
     /**
-     * @Route("/{id}", name="brasserie_delete", methods={"DELETE"})
+     * @Route("/{id}", name="api.brasserie.delete", methods={"DELETE"})
      */
     public function delete($id): Response
     {
