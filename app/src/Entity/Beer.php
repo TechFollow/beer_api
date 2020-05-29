@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BeerRepository")
+ * @UniqueEntity(fields="name", message="Name is already taken.")
  */
 class Beer
 {
@@ -14,37 +17,57 @@ class Beer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("api.get")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Unique
+     * @Groups("api.get")
+     * @Assert\Length(min = 3, max = 255)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("api.get")
+     * @Assert\NotBlank
+     * @Assert\PositiveOrZero
      */
     private $abv;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("api.get")
+     * @Assert\NotBlank
+     * @Assert\PositiveOrZero
      */
     private $ibu;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Brasserie")
+     * @Groups("api.get")
      */
     private $brasserie;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("api.get")
+     * @Assert\NotBlank
+     * @Assert\DateTime(
+     *      message="Invalid format of date_create"
+     * )
      */
     private $date_create;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("api.get")
+     * @Assert\NotBlank
+     * @Assert\DateTime(
+     *      message="Invalid format of date_update"
+     * )
      */
     private $date_update;
 

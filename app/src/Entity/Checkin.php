@@ -18,28 +18,40 @@ class Checkin
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(min = 0, max = 10)
+     * @Assert\NotBlank
      */
     private $mark;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Beer")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $beer;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $user;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
+     * @Assert\DateTime(
+     *      message="Invalid format of date_create"
+     * )
      */
     private $date_create;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
+     * @Assert\DateTime(
+     *      message="Invalid format of date_update"
+     * )
      */
     private $date_update;
 

@@ -19,22 +19,29 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\NotCompromisedPassword
+     * @Assert\Lenght(min=6)
      */
     private $password;
 
     /**
      * @ORM\Column(type="array")
+     * @Assert\NotBlank
      */
     private $role = [];
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Unique
+     * @Assert\NotBlank
      */
     private $pseudo;
 
@@ -45,11 +52,19 @@ class User
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
+     * @Assert\DateTime(
+     *      message="Invalid format of date_create"
+     * )
      */
     private $date_create;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank
+     * @Assert\DateTime(
+     *      message="Invalid format of date_update"
+     * )
      */
     private $date_update;
 

@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BrasserieRepository")
+ * @UniqueEntity(fields="name", message="Name is already taken.")
  */
 class Brasserie
 {
@@ -14,6 +17,7 @@ class Brasserie
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("api.get")
      */
     private $id;
 
@@ -21,38 +25,58 @@ class Brasserie
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Length(min = 3, max = 255)
+     * @Groups("api.get")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(min = 4)
+     * @Groups("api.get")
      */
     private $street;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Regex(
+     *      pattern="^[a-zA-Z _]+$",
+     *      message="City name must contain only letters spaces or _"
+     * )
+     * @Groups("api.get")
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Assert\Length(min = 3)
+     * @Groups("api.get")
      */
     private $postal_code;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(min = 2)
+     * @Groups("api.get")
      */
     private $country;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank
+     * @Assert\DateTime(
+     *      message="Invalid format of date_create"
+     * )
+     * @Groups("api.get")
      */
     private $date_create;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank
+     * @Assert\DateTime(
+     *      message="Invalid format of date_update"
+     * )
+     * @Groups("api.get")
      */
     private $date_update;
 
