@@ -5,7 +5,7 @@ namespace App\Controller\api;
 use App\Entity\User;
 use App\Repository\UserRepository;
 
-use App\Controller\api\apiController;
+use App\Controller\api\ApiController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
   * @Route("/api/user")
   */
-class UserController extends apiController
+class UserController extends ApiController
 {
     protected $serializer;
     protected $repository;

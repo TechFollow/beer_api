@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
-abstract class apiController extends AbstractController
+abstract class ApiController extends AbstractController
 {
     protected $serializer;
     protected $repository;

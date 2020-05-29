@@ -4,7 +4,7 @@ namespace App\Controller\api;
 
 use App\Entity\Brasserie;
 
-use App\Controller\api\apiController;
+use App\Controller\api\ApiController;
 use App\Repository\BrasserieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
   * @Route("/api/brasserie")
   */
-class BrasserieController extends apiController
+class BrasserieController extends ApiController
 {
     protected $serializer;
     protected $repository;
