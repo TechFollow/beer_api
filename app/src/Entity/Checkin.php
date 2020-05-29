@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CheckinRepository")
@@ -13,6 +14,7 @@ class Checkin
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("api.get")
      */
     private $id;
 
@@ -20,6 +22,7 @@ class Checkin
      * @ORM\Column(type="float")
      * @Assert\Range(min = 0, max = 10)
      * @Assert\NotBlank
+     * @Groups("api.get")
      */
     private $mark;
 
@@ -27,6 +30,7 @@ class Checkin
      * @ORM\ManyToOne(targetEntity="App\Entity\Beer")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
+     * @Groups("api.get")
      */
     private $beer;
 
@@ -34,6 +38,7 @@ class Checkin
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
+     * @Groups("api.get")
      */
     private $user;
 
@@ -43,6 +48,7 @@ class Checkin
      * @Assert\DateTime(
      *      message="Invalid format of date_create"
      * )
+     * @Groups("api.get")
      */
     private $date_create;
 
@@ -52,6 +58,7 @@ class Checkin
      * @Assert\DateTime(
      *      message="Invalid format of date_update"
      * )
+     * @Groups("api.get")
      */
     private $date_update;
 

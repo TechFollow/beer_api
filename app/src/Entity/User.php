@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields="pseudo", message="Pseudo is already taken.")
  */
 class User
 {
@@ -14,6 +17,7 @@ class User
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("api.get")
      */
     private $id;
 
@@ -21,32 +25,35 @@ class User
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Email
+     * @Groups("api.get")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Assert\NotCompromisedPassword
-     * @Assert\Lenght(min=6)
+     * @Assert\Length(min=6)
+     * @Groups("api.get")
      */
     private $password;
 
     /**
      * @ORM\Column(type="array")
      * @Assert\NotBlank
+     * @Groups("api.get")
      */
     private $role = [];
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Unique
      * @Assert\NotBlank
+     * @Groups("api.get")
      */
     private $pseudo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("api.get")
      */
     private $avatar;
 
@@ -56,6 +63,7 @@ class User
      * @Assert\DateTime(
      *      message="Invalid format of date_create"
      * )
+     * @Groups("api.get")
      */
     private $date_create;
 
@@ -65,6 +73,7 @@ class User
      * @Assert\DateTime(
      *      message="Invalid format of date_update"
      * )
+     * @Groups("api.get")
      */
     private $date_update;
 
