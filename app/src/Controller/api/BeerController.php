@@ -33,6 +33,7 @@ class BeerController extends ApiController
 
     /**
      * @Route("/", name="api.beer.get_all", methods={"GET"})
+     * )
      */
     public function read_all(): Response
     {
