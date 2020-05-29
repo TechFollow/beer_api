@@ -18,7 +18,7 @@ abstract class apiController extends AbstractController
     protected $repository;
     protected $em;
 
-    public function __construct(SerializerInterface $serializer, EntityManagerInterface $em)
+    protected function __construct(SerializerInterface $serializer, EntityManagerInterface $em)
     {
         $this->serializer = $serializer;
         $this->repository = NULL;
@@ -42,7 +42,9 @@ abstract class apiController extends AbstractController
     protected function api_read_all(): Response
     {
         $entity = $this->repository->findAll();
-        $json = $this->serializer->serialize($entity, 'json');
+        $json = $this->serializer->serialize($entity, 'json', [
+            'groups' => 'api.get'
+        ]);
 
         return new Response($json, 200, [
             'Content-Type' => 'application/json'
@@ -57,7 +59,9 @@ abstract class apiController extends AbstractController
                 'Content-Type' => 'application/json'
             ]);
         }
-        $json = $this->serializer->serialize($entities[0], 'json');
+        $json = $this->serializer->serialize($entities[0], 'json', [
+            'groups' => 'api.get'
+        ]);
         return new Response($json, 200, [
             'Content-Type' => 'application/json'
         ]);
@@ -78,7 +82,9 @@ abstract class apiController extends AbstractController
         if (count($errors) == 0) {
             $this->em->persist($entity);
             $this->em->flush();
-            $json_entity = $this->serializer->serialize($entity, 'json');
+            $json_entity = $this->serializer->serialize($entity, 'json', [
+                'groups' => 'api.get'
+            ]);
             return new Response($json_entity, 201, [
                 'Content-Type' => 'application/json'
             ]);
@@ -106,7 +112,9 @@ abstract class apiController extends AbstractController
             $old_entity = $old_entity[0];
             $this->copy_attributes($new_entity, $old_entity);
             $this->em->flush();
-            $json_entity = $this->serializer->serialize($old_entity, 'json');
+            $json_entity = $this->serializer->serialize($old_entity, 'json', [
+                'groups' => 'api.get'
+            ]);
             return new Response($json_entity, 200, [
                 'Content-Type' => 'application/json'
             ]);
