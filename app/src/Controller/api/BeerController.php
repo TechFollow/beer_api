@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class BeerController extends ApiController
 {
     protected $serializer;
-    protected $repository;
+    protected $doctrine;
     protected $em;
 
     public function __construct(
@@ -28,12 +28,11 @@ class BeerController extends ApiController
         EntityManagerInterface $em)
     {
         parent::__construct($serializer, $em);
-        $this->repository = $repository;
+        $this->repository = &$repository;
     }
 
     /**
      * @Route("/", name="api.beer.get_all", methods={"GET"})
-     * )
      */
     public function read_all(): Response
     {

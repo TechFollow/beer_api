@@ -23,19 +23,15 @@ class BrasserieRepository extends ServiceEntityRepository
     //  * @return Brasserie[] Returns an array of Brasserie objects
     //  */
 
-    /*
-    public function findByExampleField($value)
+    public function getByCountry()
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $rawSql = "SELECT country, COUNT(*) as NUM FROM brasserie GROUP BY country ORDER BY NUM DESC";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute([]);
+
+        return $stmt->fetchAll();
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Brasserie

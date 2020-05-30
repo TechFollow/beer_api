@@ -28,7 +28,7 @@ class CheckinController extends ApiController
         EntityManagerInterface $em)
     {
         parent::__construct($serializer, $em);
-        $this->repository = $repository;
+        $this->repository = &$repository;
     }
 
     /**

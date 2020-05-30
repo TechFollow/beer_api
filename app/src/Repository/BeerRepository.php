@@ -22,19 +22,26 @@ class BeerRepository extends ServiceEntityRepository
     // /**
     //  * @return Beer[] Returns an array of Beer objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function getByABV(int $nb_value)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('b.abv', 'DESC')
+            ->setMaxResults($nb_value)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    public function getByIBU(int $nb_value)
+    {
+        return $this->createQueryBuilder('b')
+            ->orderBy('b.ibu', 'DESC')
+            ->setMaxResults($nb_value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Beer

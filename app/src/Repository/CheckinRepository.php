@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Beer;
 use App\Entity\Checkin;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Checkin|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,19 +23,21 @@ class CheckinRepository extends ServiceEntityRepository
     // /**
     //  * @return Checkin[] Returns an array of Checkin objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function getByMark()
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $rawSql = "
+            SELECT checkin.mark, beer.name as beer, beer.abv, beer.ibu, beer.date_create, beer.date_update, brasserie.name as brasserie
+            FROM checkin
+            LEFT JOIN beer ON checkin.beer_id = beer.id
+            LEFT JOIN brasserie ON beer.brasserie_id = brasserie.id
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute([]);
+
+        return $stmt->fetchAll();
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Checkin

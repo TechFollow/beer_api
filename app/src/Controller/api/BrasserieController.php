@@ -28,7 +28,7 @@ class BrasserieController extends ApiController
         EntityManagerInterface $em)
     {
         parent::__construct($serializer, $em);
-        $this->repository = $brasserieRepository;
+        $this->repository = &$brasserieRepository;
     }
 
     /**

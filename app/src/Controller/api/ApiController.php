@@ -20,9 +20,9 @@ abstract class ApiController extends AbstractController
 
     protected function __construct(SerializerInterface $serializer, EntityManagerInterface $em)
     {
-        $this->serializer = $serializer;
+        $this->serializer = &$serializer;
         $this->repository = NULL;
-        $this->em = $em;
+        $this->em = &$em;
     }
 
     private function copy_attributes($obj_src, $obj_dest)
