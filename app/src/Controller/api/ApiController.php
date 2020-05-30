@@ -18,6 +18,9 @@ abstract class ApiController extends AbstractController
     protected $repository;
     protected $em;
 
+    const ERR_NOT_FOUND = "Not Found";
+    const INFO_OK = "OK";
+
     protected function __construct(SerializerInterface $serializer, EntityManagerInterface $em)
     {
         $this->serializer = &$serializer;
@@ -39,32 +42,31 @@ abstract class ApiController extends AbstractController
         }
     }
 
+    private function get_json_response($data, $status = 200)
+    {
+        $json = $this->serializer->serialize($data, 'json', [
+            'groups' => 'api.get'
+        ]);
+        return new Response($json, $status, [
+            'Content-Type' => 'application/json'
+        ]);
+    }
+
     protected function api_read_all(): Response
     {
         $entity = $this->repository->findAll();
-        $json = $this->serializer->serialize($entity, 'json', [
-            'groups' => 'api.get'
-        ]);
-
-        return new Response($json, 200, [
-            'Content-Type' => 'application/json'
-        ]);
+        return $this->get_json_response($entity);
     }
 
     protected function api_read_one($id): Response
     {
         $entities = $this->repository->findById($id);
         if (count($entities) == 0) {
-            return new Response("Not Found", 404, [
+            return new Response(self::ERR_NOT_FOUND, 404, [
                 'Content-Type' => 'application/json'
             ]);
         }
-        $json = $this->serializer->serialize($entities[0], 'json', [
-            'groups' => 'api.get'
-        ]);
-        return new Response($json, 200, [
-            'Content-Type' => 'application/json'
-        ]);
+        return $this->get_json_response($entities[0]);
     }
 
     protected function api_create(Request $request, ValidatorInterface $validator, $classType): Response
@@ -82,12 +84,7 @@ abstract class ApiController extends AbstractController
         if (count($errors) == 0) {
             $this->em->persist($entity);
             $this->em->flush();
-            $json_entity = $this->serializer->serialize($entity, 'json', [
-                'groups' => 'api.get'
-            ]);
-            return new Response($json_entity, 201, [
-                'Content-Type' => 'application/json'
-            ]);
+            return $this->get_json_response($entity, 201);
         }
         return $this->json($errors, 400);
     }
@@ -107,17 +104,12 @@ abstract class ApiController extends AbstractController
         if (count($errors) == 0) {
             $old_entity = $this->repository->findById($id);
             if (count($old_entity) == 0) {
-                return $this->json("Not found", 404);
+                return $this->json(self::ERR_NOT_FOUND, 404);
             }
             $old_entity = $old_entity[0];
             $this->copy_attributes($new_entity, $old_entity);
             $this->em->flush();
-            $json_entity = $this->serializer->serialize($old_entity, 'json', [
-                'groups' => 'api.get'
-            ]);
-            return new Response($json_entity, 200, [
-                'Content-Type' => 'application/json'
-            ]);
+            return $this->get_json_response($old_entity);
         }
         return $this->json($errors, 400);
     }
@@ -126,11 +118,11 @@ abstract class ApiController extends AbstractController
     {
         $entity = $this->repository->findById($id);
         if (count($entity) == 0) {
-            return $this->json("Not found", 404);
+            return $this->json(self::ERR_NOT_FOUND, 404);
         }
         $this->em->remove($entity[0]);
         $this->em->flush();
-        return $this->json("Ok", 200);
+        return $this->json(self::INFO_OK, 200);
     }
 
 }
