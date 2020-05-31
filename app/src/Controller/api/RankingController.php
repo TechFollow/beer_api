@@ -2,6 +2,8 @@
 
 namespace App\Controller\api;
 
+use Swagger\Annotations as Doc;
+
 use App\Entity\Beer;
 
 use App\Entity\Brasserie;
@@ -34,10 +36,15 @@ class RankingController extends AbstractController
     }
 
     /**
-     * Get a list of beer sorted by ABV
+     * Get a list of beer ranked by ABV
      *
      * @return Response
      * @Route("/beer_abv", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get a list of beer : ranked by ABV"
+     * )
+     * @Doc\Tag(name="ranking")
      */
     public function rank_beer_abv(): Response
     {
@@ -48,10 +55,15 @@ class RankingController extends AbstractController
     }
 
     /**
-     * Get a list of beer sorted by IBU
+     * Get a list of beer ranked by IBU
      *
      * @return Response
      * @Route("/beer_ibu", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get a list of beer : ranked by IBU"
+     * )
+     * @Doc\Tag(name="ranking")
      */
     public function rank_beer_ibu(): Response
     {
@@ -62,10 +74,15 @@ class RankingController extends AbstractController
     }
 
     /**
-     * Get a list of country sorted by the number of brasserie
+     * Get a list of country ranked by their number of brasserie
      *
      * @return Response
      * @Route("/country_brasserie", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get a list of country : ranked by number of brasserie"
+     * )
+     * @Doc\Tag(name="ranking")
      */
     public function rank_brasserie_country(): Response
     {
@@ -80,10 +97,15 @@ class RankingController extends AbstractController
     }
 
     /**
-     * Get a list of beer sorted by their mark :: ToImprove
+     * Get a list of beer ranked by their mark
      *
      * @return Response
      * @Route("/beer_mark", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get a list of beer : ranked by mark"
+     * )
+     * @Doc\Tag(name="ranking")
      */
     public function rank_beer_mark(): Response
     {

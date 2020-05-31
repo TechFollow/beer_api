@@ -3,6 +3,8 @@
 namespace App\Controller\api;
 
 use App\Entity\Beer;
+
+use Swagger\Annotations as Doc;
 use App\Repository\BeerRepository;
 
 use App\Controller\api\ApiController;
@@ -32,7 +34,13 @@ class BeerController extends ApiController
     }
 
     /**
+     * Get all beer
      * @Route("/", name="api.beer.get_all", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get all beers"
+     * )
+     * @Doc\Tag(name="beer")
      */
     public function read_all(): Response
     {
@@ -40,15 +48,33 @@ class BeerController extends ApiController
     }
 
     /**
+     * Get one beer with a specific id
      * @Route("/{id}", name="api.beer.get_one", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get a beer with a specific id"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the beer"
+     * )
+     * @Doc\Tag(name="beer")
      */
-    public function read_one($id): Response
+    public function read_one(int $id): Response
     {
         return $this->api_read_one($id);
     }
 
     /**
+     * Create a new beer
      * @Route("/", name="api.beer.new", methods="POST")
+     * @Doc\Response(
+     *      response=201,
+     *      description="Create a new beer"
+     * )
+     * @Doc\Tag(name="beer")
      */
     public function create(Request $request, ValidatorInterface $validator): Response
     {
@@ -56,17 +82,41 @@ class BeerController extends ApiController
     }
 
     /**
+     * Update a beer
      * @Route("/{id}", name="api.beer.update", methods={"PUT"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Update a beer"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the beer"
+     * )
+     * @Doc\Tag(name="beer")
      */
-    public function update(Request $request, $id, ValidatorInterface $validator): Response
+    public function update(Request $request, int $id, ValidatorInterface $validator): Response
     {
         return $this->api_update($request, $id, $validator, Beer::class);
     }
 
     /**
+     * Remove a beer
      * @Route("/{id}", name="api.beer.delete", methods={"DELETE"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Remove a beer"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the beer"
+     * )
+     * @Doc\Tag(name="beer")
      */
-    public function delete($id): Response
+    public function delete(int $id): Response
     {
         return $this->api_delete($id);
     }

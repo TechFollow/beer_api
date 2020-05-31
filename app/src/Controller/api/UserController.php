@@ -2,6 +2,8 @@
 
 namespace App\Controller\api;
 
+use Swagger\Annotations as Doc;
+
 use App\Entity\User;
 use App\Repository\UserRepository;
 
@@ -33,6 +35,11 @@ class UserController extends ApiController
 
     /**
      * @Route("/", name="api.user.get_all", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get all users"
+     * )
+     * @Doc\Tag(name="user")
      */
     public function read_all(): Response
     {
@@ -41,6 +48,17 @@ class UserController extends ApiController
 
     /**
      * @Route("/{id}", name="api.user.get_one", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get an user"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the user"
+     * )
+     * @Doc\Tag(name="user")
      */
     public function read_one($id): Response
     {
@@ -49,6 +67,11 @@ class UserController extends ApiController
 
     /**
      * @Route("/", name="api.user.new", methods="POST")
+     * @Doc\Response(
+     *      response=201,
+     *      description="Create a new user"
+     * )
+     * @Doc\Tag(name="user")
      */
     public function create(Request $request, ValidatorInterface $validator): Response
     {
@@ -57,6 +80,17 @@ class UserController extends ApiController
 
     /**
      * @Route("/{id}", name="api.user.update", methods={"PUT"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Update an user"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the user"
+     * )
+     * @Doc\Tag(name="user")
      */
     public function update(Request $request, $id, ValidatorInterface $validator): Response
     {
@@ -65,6 +99,17 @@ class UserController extends ApiController
 
     /**
      * @Route("/{id}", name="api.user.delete", methods={"DELETE"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Remove an user"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the user"
+     * )
+     * @Doc\Tag(name="user")
      */
     public function delete($id): Response
     {

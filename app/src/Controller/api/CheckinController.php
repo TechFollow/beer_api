@@ -2,6 +2,8 @@
 
 namespace App\Controller\api;
 
+use Swagger\Annotations as Doc;
+
 use App\Entity\Checkin;
 use App\Repository\CheckinRepository;
 
@@ -33,6 +35,11 @@ class CheckinController extends ApiController
 
     /**
      * @Route("/", name="api.checkin.get_all", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get all checkins"
+     * )
+     * @Doc\Tag(name="checkin")
      */
     public function read_all(): Response
     {
@@ -41,6 +48,17 @@ class CheckinController extends ApiController
 
     /**
      * @Route("/{id}", name="api.checkin.get_one", methods={"GET"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Get a checkin"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the checkin"
+     * )
+     * @Doc\Tag(name="checkin")
      */
     public function read_one($id): Response
     {
@@ -49,6 +67,11 @@ class CheckinController extends ApiController
 
     /**
      * @Route("/", name="api.checkin.new", methods="POST")
+     * @Doc\Response(
+     *      response=201,
+     *      description="Create a new checkin"
+     * )
+     * @Doc\Tag(name="checkin")
      */
     public function create(Request $request, ValidatorInterface $validator): Response
     {
@@ -57,6 +80,17 @@ class CheckinController extends ApiController
 
     /**
      * @Route("/{id}", name="api.checkin.update", methods={"PUT"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Update a checkin"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the checkin"
+     * )
+     * @Doc\Tag(name="checkin")
      */
     public function update(Request $request, $id, ValidatorInterface $validator): Response
     {
@@ -65,6 +99,17 @@ class CheckinController extends ApiController
 
     /**
      * @Route("/{id}", name="api.checkin.delete", methods={"DELETE"})
+     * @Doc\Response(
+     *      response=200,
+     *      description="Remove a checkin"
+     * )
+     * @Doc\Parameter(
+     *      name="id",
+     *      in="path",
+     *      type="integer",
+     *      description="ID of the checkin"
+     * )
+     * @Doc\Tag(name="checkin")
      */
     public function delete($id): Response
     {
