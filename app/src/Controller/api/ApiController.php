@@ -5,6 +5,7 @@ namespace App\Controller\api;
 use ReflectionClass;
 use ReflectionProperty;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -19,6 +20,8 @@ abstract class ApiController extends AbstractController
     protected $em;
 
     const ERR_NOT_FOUND = "Not Found";
+    const ERR_INTERN = "Internal error";
+    const ERR_INVALID_ARG = "Invalid argument exception";
     const INFO_OK = "OK";
 
     protected function __construct(SerializerInterface $serializer, EntityManagerInterface $em)
@@ -83,7 +86,11 @@ abstract class ApiController extends AbstractController
         $errors = $validator->validate($entity);
         if (count($errors) == 0) {
             $this->em->persist($entity);
-            $this->em->flush();
+            try {
+                $this->em->flush();
+            } catch (ORMInvalidArgumentException $e) {
+                return $this->json(self::ERR_INVALID_ARG, 400);
+            }
             return $this->get_json_response($entity, 201);
         }
         return $this->json($errors, 400);
@@ -108,7 +115,11 @@ abstract class ApiController extends AbstractController
             }
             $old_entity = $old_entity[0];
             $this->copy_attributes($new_entity, $old_entity);
-            $this->em->flush();
+            try {
+                $this->em->flush();
+            } catch (ORMInvalidArgumentException $e) {
+                return $this->json(self::ERR_INVALID_ARG, 400);
+            }
             return $this->get_json_response($old_entity);
         }
         return $this->json($errors, 400);
