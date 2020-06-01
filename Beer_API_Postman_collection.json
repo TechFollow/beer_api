@@ -1,0 +1,648 @@
+{
+	"info": {
+		"_postman_id": "282ff1a3-5f6d-4e13-90e0-eaea67f5bea5",
+		"name": "Beer API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Brasserie",
+			"item": [
+				{
+					"name": "Brasserie.Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/brasserie/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"brasserie",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Brasserie.Read.One",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/brasserie/18857",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"brasserie",
+								"18857"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Brasserie.Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Brewer 5 NEW 3\",\n    \"city\": \"City\",\n    \"street\": \"Address\",\n    \"postalCode\": \"\",\n    \"country\": \"Country\",\n    \"dateCreate\": \"2020-05-27T10:27:32+02:00\",\n    \"dateUpdate\": \"2020-05-27T10:27:32+02:00\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8000/api/brasserie/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"brasserie",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Brasserie.Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Brewer 5 NEW\",\n    \"street\": \"ADR\",\n    \"city\": \"City\",\n    \"postalCode\": \"\",\n    \"country\": \"Country\",\n    \"dateCreate\": \"2020-05-27T10:27:32+02:00\",\n    \"dateUpdate\": \"2020-05-27T10:27:32+02:00\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8000/api/brasserie/18857",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"brasserie",
+								"18857"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Brasserie.Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8000/api/brasserie/18855",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"brasserie",
+								"18855"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Beer",
+			"item": [
+				{
+					"name": "Beer.Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/beer/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"beer",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Beer.Read.One",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/beer/100",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"beer",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Beer.Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Name Beer\",\n    \"abv\": 0,\n    \"ibu\": 0,\n    \"brasserie\": 1,\n    \"date_create\": \"2020-05-27T10:27:32+02:00\",\n    \"date_update\": \"2020-05-27T10:27:32+02:00\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8000/api/beer/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"beer",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Beer.Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Name Beer UPDATED\",\n    \"abv\": 8,\n    \"ibu\": 8,\n    \"brasserie\": null,\n    \"date_create\": \"2020-05-27T10:27:32+02:00\",\n    \"date_update\": \"2020-05-27T10:27:32+02:00\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8000/api/beer/1001",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"beer",
+								"1001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Beer.Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8000/api/beer/1001",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"beer",
+								"1001"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User.Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/user/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User.Read.One",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/user/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User.Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@email.fr\",\n    \"password\": \"agdyuiodfktexcj\",\n    \"role\": [\n    \t\"user\"\n    ],\n    \"pseudo\": \"userA\",\n    \"avatar\": null,\n    \"date_create\": \"2020-05-27T10:27:32+02:00\",\n    \"date_update\": \"2020-05-27T10:27:32+02:00\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8000/api/user/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User.Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@email.fr\",\n    \"password\": \"My user\",\n    \"role\": [\n        \"user\"\n    ],\n    \"pseudo\": \"paswd\",\n    \"avatar\": null,\n    \"date_create\": \"2020-05-27T10:27:32+02:00\",\n    \"date_update\": \"2020-05-27T10:27:32+02:00\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8000/api/user/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User.Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8000/api/user/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Checkin",
+			"item": [
+				{
+					"name": "Checkin.Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/checkin/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"checkin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkin.Read.One",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/checkin/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"checkin",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkin.Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"mark\": 8.8,\n    1,\n    1,\n    \"date_create\": \"2020-05-29T11:29:58+02:00\",\n    \"date_update\": \"2020-05-29T11:29:58+02:00\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8000/api/checkin/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"checkin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkin.Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@email.fr\",\n    \"password\": \"My user\",\n    \"role\": [\n        \"user\"\n    ],\n    \"pseudo\": \"paswd\",\n    \"avatar\": null,\n    \"date_create\": \"2020-05-27T10:27:32+02:00\",\n    \"date_update\": \"2020-05-27T10:27:32+02:00\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8000/api/checkin/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"checkin",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkin.Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8000/api/checkin/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"checkin",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ranking",
+			"item": [
+				{
+					"name": "beer_by_abv",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/rank/beer_abv",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"rank",
+								"beer_abv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "beer_by_ibu",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/rank/beer_ibu",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"rank",
+								"beer_ibu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "country_brasserie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/rank/country_brasserie",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"rank",
+								"country_brasserie"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "beer_by_mark",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/rank/beer_mark",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"rank",
+								"beer_mark"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
