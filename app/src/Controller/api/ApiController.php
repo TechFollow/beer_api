@@ -2,6 +2,10 @@
 
 namespace App\Controller\api;
 
+use App\Entity\Beer;
+use App\Entity\Checkin;
+use App\Entity\Brasserie;
+
 use ReflectionClass;
 use ReflectionProperty;
 use Doctrine\ORM\EntityManagerInterface;
@@ -72,6 +76,46 @@ abstract class ApiController extends AbstractController
         return $this->get_json_response($entities[0]);
     }
 
+    private function get_entity(int $id, $classType)
+    {
+        $repository = $this->getDoctrine()->getRepository($classType);
+        $entity = $repository->findById($id);
+        if (count($entity) == 0) {
+            return NULL;
+        } else {
+            return $entity[0];
+        }
+    }
+
+    private function insert_sub_entity($entity, $json_data): void
+    {
+        $data = json_decode($json_data);
+        if ($entity instanceof Beer) {
+            if ($entity->getBrasserie() == NULL && isset($data->{"brasserie_id"})) {
+                $subEntity = $this->get_entity($data->{"brasserie_id"}, Brasserie::class);
+                if ($subEntity == NULL) {
+                    throw new \Exception("Brasserie entity not found");
+                }
+                $entity->setBrasserie($subEntity);
+            }
+        } else if ($entity instanceof Checkin) {
+            if ($entity->getUser() == NULL && isset($json_data['user_id'])) {
+                $subEntity = $this->get_entity($json_data['user_id'], User::class);
+                if ($subEntity == NULL) {
+                    throw new \Exception("User entity not found");
+                }
+                $entity->setUser($subEntity);
+            }
+            if ($entity->getBeer() == NULL && isset($json_data['beer_id'])) {
+                $subEntity = $this->get_entity($json_data['beer_id'], Beer::class);
+                if ($subEntity == NULL) {
+                    throw new \Exception("Beer entity not found");
+                }
+                $entity->setBeer($subEntity);
+            }
+        }
+    }
+
     protected function api_create(Request $request, ValidatorInterface $validator, $classType): Response
     {
         $json_data = $request->getContent();
@@ -83,17 +127,22 @@ abstract class ApiController extends AbstractController
                 'message' => $e->getMessage()
             ]);
         }
-        $errors = $validator->validate($entity);
-        if (count($errors) == 0) {
-            $this->em->persist($entity);
-            try {
-                $this->em->flush();
-            } catch (ORMInvalidArgumentException $e) {
-                return $this->json(self::ERR_INVALID_ARG, 400);
-            }
-            return $this->get_json_response($entity, 201);
+        try {
+            $this->insert_sub_entity($entity, $json_data);
+        } catch (\Exception $e) {
+            return $this->json($e, 400);
         }
-        return $this->json($errors, 400);
+        $errors = $validator->validate($entity);
+        if (count($errors) != 0) {
+            return $this->json($errors, 400);
+        }
+        $this->em->persist($entity);
+        try {
+            $this->em->flush();
+        } catch (ORMInvalidArgumentException $e) {
+            return $this->json(self::ERR_INVALID_ARG, 400);
+        }
+        return $this->get_json_response($entity, 201);
     }
 
     protected function api_update(Request $request, $id, ValidatorInterface $validator, $classType): Response
@@ -107,22 +156,27 @@ abstract class ApiController extends AbstractController
                 'message' => $e->getMessage()
             ]);
         }
-        $errors = $validator->validate($new_entity);
-        if (count($errors) == 0) {
-            $old_entity = $this->repository->findById($id);
-            if (count($old_entity) == 0) {
-                return $this->json(self::ERR_NOT_FOUND, 404);
-            }
-            $old_entity = $old_entity[0];
-            $this->copy_attributes($new_entity, $old_entity);
-            try {
-                $this->em->flush();
-            } catch (ORMInvalidArgumentException $e) {
-                return $this->json(self::ERR_INVALID_ARG, 400);
-            }
-            return $this->get_json_response($old_entity);
+        try {
+            $this->insert_sub_entity($new_entity, $json_data);
+        } catch (\Exception $e) {
+            return $this->json($e, 400);
         }
-        return $this->json($errors, 400);
+        $old_entity = $this->repository->findById($id);
+        if (count($old_entity) == 0) {
+            return $this->json(self::ERR_NOT_FOUND, 404);
+        }
+        $old_entity = $old_entity[0];
+        $this->copy_attributes($new_entity, $old_entity);
+        $errors = $validator->validate($old_entity);
+        if (count($errors) != 0) {
+            return $this->json($errors, 400);
+        }
+        try {
+            $this->em->flush();
+        } catch (ORMInvalidArgumentException $e) {
+            return $this->json(self::ERR_INVALID_ARG, 400);
+        }
+        return $this->get_json_response($old_entity);
     }
 
     protected function api_delete($id): Response
