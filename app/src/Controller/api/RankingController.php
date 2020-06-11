@@ -25,7 +25,7 @@ class RankingController extends AbstractController
         $this->serializer = &$serializer;
     }
 
-    private function get_json_response($data): Response
+    private function getJsonResponse($data): Response
     {
         $json = $this->serializer->serialize($data, 'json', [
             'groups' => 'api.get'
@@ -46,12 +46,12 @@ class RankingController extends AbstractController
      * )
      * @Doc\Tag(name="ranking")
      */
-    public function rank_beer_abv(): Response
+    public function rankBeerByAbv(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Beer::class);
 
         $data = $repository->getByABV(10);
-        return $this->get_json_response($data);
+        return $this->getJsonResponse($data);
     }
 
     /**
@@ -65,12 +65,12 @@ class RankingController extends AbstractController
      * )
      * @Doc\Tag(name="ranking")
      */
-    public function rank_beer_ibu(): Response
+    public function rankBeerByIbu(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Beer::class);
 
         $data = $repository->getByIBU(10);
-        return $this->get_json_response($data);
+        return $this->getJsonResponse($data);
     }
 
     /**
@@ -84,7 +84,7 @@ class RankingController extends AbstractController
      * )
      * @Doc\Tag(name="ranking")
      */
-    public function rank_brasserie_country(): Response
+    public function rankBrasserieByCountry(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Brasserie::class);
 
@@ -107,11 +107,11 @@ class RankingController extends AbstractController
      * )
      * @Doc\Tag(name="ranking")
      */
-    public function rank_beer_mark(): Response
+    public function rankBeerByMark(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Checkin::class);
 
         $data = $repository->getByMark();
-        return $this->get_json_response($data);
+        return $this->getJsonResponse($data);
     }
 }

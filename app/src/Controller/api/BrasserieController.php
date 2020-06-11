@@ -20,9 +20,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
   */
 class BrasserieController extends ApiController
 {
-    protected $serializer;
+    protected SerializerInterface $serializer;
     protected $repository;
-    protected $em;
+    protected EntityManagerInterface $em;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -41,9 +41,9 @@ class BrasserieController extends ApiController
      * )
      * @Doc\Tag(name="brasserie")
      */
-    public function read_all(): Response
+    public function readAll(): Response
     {
-        return $this->api_read_all();
+        return $this->apiReadAll();
     }
 
     /**
@@ -60,9 +60,9 @@ class BrasserieController extends ApiController
      * )
      * @Doc\Tag(name="brasserie")
      */
-    public function read_one($id): Response
+    public function readOne($id): Response
     {
-        return $this->api_read_one($id);
+        return $this->apiReadOne($id);
     }
 
     /**
@@ -75,7 +75,7 @@ class BrasserieController extends ApiController
      */
     public function create(Request $request, ValidatorInterface $validator): Response
     {
-        return $this->api_create($request, $validator, Brasserie::class);
+        return $this->apiCreate($request, $validator, Brasserie::class);
     }
 
     /**
@@ -94,7 +94,7 @@ class BrasserieController extends ApiController
      */
     public function update(Request $request, $id, ValidatorInterface $validator): Response
     {
-        return $this->api_update($request, $id, $validator, Brasserie::class);
+        return $this->apiUpdate($request, $id, $validator, Brasserie::class);
     }
 
     /**
@@ -113,7 +113,7 @@ class BrasserieController extends ApiController
      */
     public function delete($id): Response
     {
-        return $this->api_delete($id);
+        return $this->apiDelete($id);
     }
 
 }

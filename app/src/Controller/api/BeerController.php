@@ -20,9 +20,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
   */
 class BeerController extends ApiController
 {
-    protected $serializer;
-    protected $doctrine;
-    protected $em;
+    protected SerializerInterface $serializer;
+    protected $repository;
+    protected EntityManagerInterface $em;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -42,9 +42,9 @@ class BeerController extends ApiController
      * )
      * @Doc\Tag(name="beer")
      */
-    public function read_all(): Response
+    public function readAll(): Response
     {
-        return $this->api_read_all();
+        return $this->apiReadAll();
     }
 
     /**
@@ -62,9 +62,9 @@ class BeerController extends ApiController
      * )
      * @Doc\Tag(name="beer")
      */
-    public function read_one(int $id): Response
+    public function readOne(int $id): Response
     {
-        return $this->api_read_one($id);
+        return $this->apiReadOne($id);
     }
 
     /**
@@ -78,7 +78,7 @@ class BeerController extends ApiController
      */
     public function create(Request $request, ValidatorInterface $validator): Response
     {
-        return $this->api_create($request, $validator, Beer::class);
+        return $this->apiCreate($request, $validator, Beer::class);
     }
 
     /**
@@ -98,7 +98,7 @@ class BeerController extends ApiController
      */
     public function update(Request $request, int $id, ValidatorInterface $validator): Response
     {
-        return $this->api_update($request, $id, $validator, Beer::class);
+        return $this->apiUpdate($request, $id, $validator, Beer::class);
     }
 
     /**
@@ -118,7 +118,7 @@ class BeerController extends ApiController
      */
     public function delete(int $id): Response
     {
-        return $this->api_delete($id);
+        return $this->apiDelete($id);
     }
 
 }

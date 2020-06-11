@@ -20,9 +20,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
   */
 class CheckinController extends ApiController
 {
-    protected $serializer;
+    protected SerializerInterface $serializer;
     protected $repository;
-    protected $em;
+    protected EntityManagerInterface $em;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -41,9 +41,9 @@ class CheckinController extends ApiController
      * )
      * @Doc\Tag(name="checkin")
      */
-    public function read_all(): Response
+    public function readAll(): Response
     {
-        return $this->api_read_all();
+        return $this->apiReadAll();
     }
 
     /**
@@ -60,9 +60,9 @@ class CheckinController extends ApiController
      * )
      * @Doc\Tag(name="checkin")
      */
-    public function read_one($id): Response
+    public function readOne($id): Response
     {
-        return $this->api_read_one($id);
+        return $this->apiReadOne($id);
     }
 
     /**
@@ -75,7 +75,7 @@ class CheckinController extends ApiController
      */
     public function create(Request $request, ValidatorInterface $validator): Response
     {
-        return $this->api_create($request, $validator, Checkin::class);
+        return $this->apiCreate($request, $validator, Checkin::class);
     }
 
     /**
@@ -94,7 +94,7 @@ class CheckinController extends ApiController
      */
     public function update(Request $request, $id, ValidatorInterface $validator): Response
     {
-        return $this->api_update($request, $id, $validator, Checkin::class);
+        return $this->apiUpdate($request, $id, $validator, Checkin::class);
     }
 
     /**
@@ -113,7 +113,7 @@ class CheckinController extends ApiController
      */
     public function delete($id): Response
     {
-        return $this->api_delete($id);
+        return $this->apiDelete($id);
     }
 
 }
