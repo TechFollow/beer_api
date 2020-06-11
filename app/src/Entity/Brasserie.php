@@ -39,7 +39,7 @@ class Brasserie
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Regex(
-     *      pattern="^[a-zA-Z _]+$",
+     *      pattern="/^[a-zA-Z _]+$/",
      *      message="City name must contain only letters spaces or _"
      * )
      * @Groups("api.get")
