@@ -203,8 +203,16 @@ abstract class ApiController extends AbstractController
         if (count($entity) == 0) {
             return $this->json(self::ERR_NOT_FOUND, 404);
         }
-        $this->em->remove($entity[0]);
-        $this->em->flush();
+        $entity = $entity[0];
+        if (method_exists($entity, 'setForeignKeyAsNull')) {
+            $entity->setForeignKeyAsNull($this->em);
+        }
+        try {
+            $this->em->remove($entity);
+            $this->em->flush();
+        } catch (\Exception $e) {
+            return $this->json(self::ERR_INTERN, 400);
+        }
         return $this->json(self::INFO_OK, 200);
     }
 }

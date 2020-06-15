@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -79,6 +81,23 @@ class Brasserie
      * @Groups("api.get")
      */
     private $date_update;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Beer", mappedBy="brasserie")
+     */
+    private $beers;
+
+    public function __contruct()
+    {
+        $this->beers = new ArrayCollection();
+    }
+
+    public function setForeignKeyAsNull(EntityManagerInterface $em): void
+    {
+        foreach ($this->beers as $beer) {
+            $beer->setBrasserie(NULL);
+        }
+    }
 
     public function getId(): ?int
     {

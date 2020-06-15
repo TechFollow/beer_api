@@ -28,7 +28,7 @@ class Checkin
     private $mark;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Beer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Beer", inversedBy="checkins")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      * @Groups("api.get")
@@ -36,7 +36,7 @@ class Checkin
     private $beer;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="checkins")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      * @Groups("api.get")

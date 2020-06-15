@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -76,6 +78,23 @@ class User
      * @Groups("api.get")
      */
     private $date_update;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Checkin", mappedBy="user")
+     */
+    private $checkins;
+
+    public function construct()
+    {
+        $this->beers = new ArrayCollection();
+    }
+
+    public function setForeignKeyAsNull(EntityManagerInterface $em): void
+    {
+        foreach ($this->checkins as $checkin) {
+            $em->remove($checkin);
+        }
+    }
 
     public function getId(): ?int
     {
