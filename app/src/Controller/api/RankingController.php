@@ -22,7 +22,7 @@ class RankingController extends AbstractController
 
     public function __construct(SerializerInterface $serializer)
     {
-        $this->serializer = &$serializer;
+        $this->serializer = $serializer;
     }
 
     private function getJsonResponse($data): Response

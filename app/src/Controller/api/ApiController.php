@@ -3,15 +3,16 @@
 namespace App\Controller\api;
 
 use App\Entity\Beer;
-use App\Entity\Checkin;
-use App\Entity\Brasserie;
-
 use ReflectionClass;
+use App\Entity\Checkin;
+
 use ReflectionProperty;
+use App\Entity\Brasserie;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 abstract class ApiController extends AbstractController
 {
     protected SerializerInterface $serializer;
-    protected $repository = NULL;
+    protected ObjectRepository $repository;
     protected EntityManagerInterface $em;
 
     protected const ERR_NOT_FOUND = "Not Found";
@@ -30,15 +31,16 @@ abstract class ApiController extends AbstractController
 
     protected function __construct(
         SerializerInterface $serializer,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        ObjectRepository $repository
     )
     {
-        $this->serializer = &$serializer;
-        $this->repository = NULL;
-        $this->em = &$em;
+        $this->serializer = $serializer;
+        $this->em = $em;
+        $this->repository = $repository;
     }
 
-    private function copyAttributes($obj_src, $obj_dest): void
+    private function copyAttributes($objSrc, $objDest): void
     {
         $reflection = new ReflectionClass($obj_src);
         $vars = $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
@@ -95,13 +97,14 @@ abstract class ApiController extends AbstractController
 
     private function insertSubEntity($entity, string $jsonData): void
     {
-        $data = json_decode($jsonData);
+        // Spliter dans les class enfants / Surchager le normalizer
+        $data = json_decode($jsonData, true);
         if ($entity instanceof Beer) {
             if (
                 $entity->getBrasserie() == NULL
-                && isset($data->{"brasserie_id"})
+                && isset($data["brasserie_id"])
             ) {
-                $subEntity = $this->getEntity($data->{"brasserie_id"}, Brasserie::class);
+                $subEntity = $this->getEntity($data["brasserie_id"], Brasserie::class);
                 if ($subEntity == NULL) {
                     throw new \Exception("Brasserie entity not found");
                 }

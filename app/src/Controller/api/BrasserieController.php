@@ -20,17 +20,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
   */
 class BrasserieController extends ApiController
 {
-    protected SerializerInterface $serializer;
-    protected $repository;
-    protected EntityManagerInterface $em;
 
     public function __construct(
         SerializerInterface $serializer,
         BrasserieRepository $brasserieRepository,
         EntityManagerInterface $em)
     {
-        parent::__construct($serializer, $em);
-        $this->repository = &$brasserieRepository;
+        parent::__construct($serializer, $em, $brasserieRepository);
     }
 
     /**
